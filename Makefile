@@ -19,9 +19,13 @@ endif
 
 # Server and CLI binaries used to stand up the counter store for the integration
 # tests. tests_with_valkey overrides these so that the same suite runs against
-# Valkey over the same Redis protocol.
+# Valkey over the same Redis protocol. STORE_SERVER is exported because some
+# integration tests start their own servers through test/common.WithMultiRedis,
+# which reads it from the environment; without the export those tests would keep
+# using redis-server during the Valkey run.
 STORE_SERVER ?= redis-server
 STORE_CLI ?= redis-cli
+export STORE_SERVER
 
 .PHONY: bootstrap
 bootstrap: ;
